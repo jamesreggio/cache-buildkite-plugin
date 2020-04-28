@@ -48,6 +48,7 @@ if [[ -n "${BUILDKITE_PLUGIN_CACHE_CACHE_KEY:-}" ]]; then
       TAR_FILE="${BUILDKITE_PLUGIN_CACHE_TARBALL_STORAGE}/${BUILDKITE_ORGANIZATION_SLUG}/${BUILDKITE_PIPELINE_SLUG}/${cache_key}.tar"
       if [ -f "$TAR_FILE" ]; then
         tar -xf "${TAR_FILE}" -C .
+        rm "${TAR_FILE}"
       fi
     else
       echo ":aws: :amazon-s3: sync ${cache_key}"
@@ -59,6 +60,7 @@ if [[ -n "${BUILDKITE_PLUGIN_CACHE_CACHE_KEY:-}" ]]; then
       else
         aws s3 cp "s3://${bucket}/${TAR_FILE}" . $AWS_ARGS
         tar -xf "${TAR_FILE}" -C .
+        rm "${TAR_FILE}"
       fi
     fi
 else
